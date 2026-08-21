@@ -1,19 +1,28 @@
-interface Coin {
-  id: string; // 'bitcoin'
-  symbol: string; // 'BTC'
-  name: string; // 'Bitcoin'
+export interface CoinMeta {
+  id: string;
+  ticker: string;
+  trading_pair: string;
+  name: string;
   logo: string;
-  currentPrice: number;
-  priceChange24h: number; // persentase
 }
 
-interface Holding {
+export interface CoinDisplay {
+  id: string; // 'bitcoin'
+  ticker: string; // 'BTC'
+  trading_pair: string; //'BTCUSDT'
+  name: string; // 'Bitcoin'
+  logo: string;
+  price: any;
+  changePercent: any;
+}
+
+export interface Holding {
   coinId: string;
   amount: number;
   averageBuyPrice: number;
 }
 
-interface Transaction {
+export interface Transaction {
   id: string;
   coinId: string;
   type: "buy" | "sell";
@@ -22,7 +31,7 @@ interface Transaction {
   timestamp: number;
 }
 
-interface PortfolioState {
+export interface PortfolioState {
   cashBalance: number;
   holdings: Holding[];
   transactions: Transaction[];
