@@ -2,19 +2,20 @@ import { useEffect, useState } from "react";
 import type { CoinDisplay } from "../types";
 import { fetchTicker } from "../services/binance";
 import { mergeCoinData } from "../utils/mergeCoinData";
+import MarketCard from "../components/MarketCard";
 
 export default function Market() {
   const [coins, setCoins] = useState<CoinDisplay[]>([]);
   useEffect(() => {
     fetchTicker().then((data) => setCoins(mergeCoinData(data)));
   }, []);
-  console.log(coins);
   return (
     <>
       <div className="border border-black ">
         {coins.map((coin: CoinDisplay): any => {
           return (
             <>
+              <MarketCard />
               <div
                 key={coin.id}
                 className="border border-black w-96 grid grid-cols-4"

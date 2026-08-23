@@ -6,7 +6,7 @@ export default function MarketCard({
   ticker,
   price,
   changePercent,
-}) {
+}): CoinDisplay {
   return (
     <>
       <div key={id} className="border border-black w-96 grid grid-cols-4">

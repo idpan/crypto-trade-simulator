@@ -18,22 +18,23 @@ export interface CoinDisplay {
 
 export interface Holding {
   coinId: string;
-  amount: number;
-  averageBuyPrice: number;
+  qty: number;
+  avgPrice: number;
 }
 
 export interface Transaction {
   id: string;
   coinId: string;
   type: "buy" | "sell";
-  amount: number;
-  priceAtTransaction: number;
+  qty: number;
+  price: number;
+  total: number;
   timestamp: number;
 }
 
 export interface PortfolioState {
-  cashBalance: number;
+  cash: number;
   holdings: Holding[];
   transactions: Transaction[];
-  portfolioHistory: { timestamp: number; totalValue: number }[]; // buat chart
+  // portfolioHistory: { timestamp: number; totalValue: number }[]; // buat chart
 }
