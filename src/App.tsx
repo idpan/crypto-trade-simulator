@@ -7,7 +7,6 @@ import Portofolio from "./pages/Portofolio";
 import Dashboard from "./pages/Dashboard";
 
 export default function App() {
-  console.log(getPortofolio());
   return (
     <>
       <nav className="flex gap-10 p-10 border justify-center">

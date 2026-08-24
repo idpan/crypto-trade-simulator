@@ -1,4 +1,4 @@
-import type { PortfolioState, Transaction } from "../types";
+import type { Holding, PortfolioState, Transaction } from "../types";
 
 const STORAGE_KEY = "portofolio_state";
 const INITIAL_BALANCE = 100_000_000;
@@ -34,12 +34,8 @@ export const saveTransaction = (
 ) => {
   const portofolio = getPortofolio();
   const total = qty * price;
-  if (type === "buy") portofolio.cash = portofolio.cash - total;
-  if (type === "sell") portofolio.cash = portofolio.cash + total;
-
-  portofolio.holdings.push({ coinId, qty, avgPrice: price });
-
-  portofolio.transactions.push({
+  const holding: Holding = { coinId, qty, avgPrice: price };
+  const transaction: Transaction = {
     id: Date.now().toString(),
     coinId,
     type,
@@ -47,6 +43,11 @@ export const saveTransaction = (
     price,
     total,
     timestamp: Date.now(),
-  });
+  };
+
+  if (type === "buy") portofolio.cash = portofolio.cash - total;
+  portofolio.holdings.push(holding);
+  portofolio.transactions.push(transaction);
+
   localStorage.setItem(STORAGE_KEY, JSON.stringify(portofolio));
 };

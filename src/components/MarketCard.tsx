@@ -1,15 +1,21 @@
-import type { CoinDisplay } from "../types";
+export interface MarketCardProps {
+  logo: string;
+  name: string; // 'Bitcoin'
+  ticker: string; // 'BTC'
+  price: number;
+  changePercent: number;
+}
+
 export default function MarketCard({
-  id,
   logo,
   name,
   ticker,
   price,
   changePercent,
-}): CoinDisplay {
+}: MarketCardProps) {
   return (
     <>
-      <div key={id} className="border border-black w-96 grid grid-cols-4">
+      <div className="border border-black w-96 grid grid-cols-4">
         <div>
           <i>{logo}</i>
         </div>

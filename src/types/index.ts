@@ -6,15 +6,15 @@ export interface CoinMeta {
   logo: string;
 }
 
-export interface CoinDisplay {
-  id: string; // 'bitcoin'
-  ticker: string; // 'BTC'
-  trading_pair: string; //'BTCUSDT'
-  name: string; // 'Bitcoin'
-  logo: string;
-  price: any;
-  changePercent: any;
-}
+// export interface CoinDisplay {
+//   id: string; // 'bitcoin'
+//   ticker: string; // 'BTC'
+//   trading_pair: string; //'BTCUSDT'
+//   name: string; // 'Bitcoin'
+//   logo: string;
+//   price: any;
+//   changePercent: any;
+// }
 
 export interface Holding {
   coinId: string;
