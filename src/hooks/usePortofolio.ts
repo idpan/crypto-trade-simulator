@@ -36,7 +36,7 @@ export const saveTransaction = (
   const total = qty * price;
   const holding: Holding = { coinId, qty, avgPrice: price };
   const transaction: Transaction = {
-    id: Date.now().toString(),
+    id: type + coinId + Date.now().toString(),
     coinId,
     type,
     qty,
@@ -46,7 +46,25 @@ export const saveTransaction = (
   };
 
   if (type === "buy") portofolio.balance = portofolio.balance - total;
-  portofolio.holdings.push(holding);
+  const existingIndex = portofolio.holdings.findIndex((h: Holding) => {
+    return h.coinId === coinId;
+  });
+  if (existingIndex != -1) {
+    portofolio.holdings = portofolio.holdings.map(
+      (holding: Holding): Holding => {
+        if (holding.coinId === coinId) {
+          const newQty = holding.qty + qty;
+          const newAvgPrice = (holding.avgPrice * holding.qty + total) / newQty;
+          return { ...holding, qty: newQty, avgPrice: newAvgPrice };
+        }
+
+        return holding;
+      },
+    );
+  } else {
+    portofolio.holdings.push(holding);
+  }
+
   portofolio.transactions.push(transaction);
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(portofolio));

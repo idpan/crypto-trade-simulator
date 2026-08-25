@@ -4,7 +4,7 @@ import { mergeCoinData } from "../utils/mergeCoinData";
 // import type { CoinData } from "../components/MarketCard";
 import type { CoinData } from "../types";
 import MarketCard from "../components/MarketCard";
-import { getPortofolio } from "../hooks/usePortofolio";
+import { getPortofolio, saveTransaction } from "../hooks/usePortofolio";
 import type { PortfolioState } from "../types";
 import BuyModal from "../components/BuyModal";
 
@@ -15,7 +15,6 @@ export default function Market() {
   useEffect(() => {
     fetchTicker().then((data) => setCoins(mergeCoinData(data)));
   }, []);
-
   return (
     <>
       <div className="border border-black ">
@@ -50,8 +49,22 @@ export default function Market() {
           isOpen={!!selectedCoin}
           onClose={() => setSelectedCoin(null)}
           onSubmit={(amount) => {
-            console.log("Buy submitted:", selectedCoin.id, amount); // placeholder
-            setSelectedCoin(null);
+            try {
+              const confirmationMessage = `apakah ingin lanjut membeli ${amount} ${selectedCoin.ticker} seharga ${(amount * selectedCoin.price).toFixed(2)} ?`;
+              if (!confirm(confirmationMessage)) return;
+
+              saveTransaction(
+                selectedCoin.id,
+                amount,
+                selectedCoin.price,
+                "buy",
+              );
+              const successMessage = `Pembelian ${amount} ${selectedCoin.ticker} seharga ${(amount * selectedCoin.price).toFixed(2)} sukses !!! `;
+              alert(successMessage);
+              setSelectedCoin(null);
+            } catch (error) {
+              alert(`pembelian gagal karna ${error}`);
+            }
           }}
         />
       )}
