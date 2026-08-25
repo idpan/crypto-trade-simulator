@@ -6,15 +6,14 @@ export interface CoinMeta {
   logo: string;
 }
 
-// export interface CoinDisplay {
-//   id: string; // 'bitcoin'
-//   ticker: string; // 'BTC'
-//   trading_pair: string; //'BTCUSDT'
-//   name: string; // 'Bitcoin'
-//   logo: string;
-//   price: any;
-//   changePercent: any;
-// }
+export interface CoinData {
+  id: string; // 'bitcoin'
+  ticker: string; // 'BTC'
+  name: string; // 'Bitcoin'
+  logo: string;
+  price: any;
+  changePercent: any;
+}
 
 export interface Holding {
   coinId: string;
@@ -33,7 +32,7 @@ export interface Transaction {
 }
 
 export interface PortfolioState {
-  cash: number;
+  balance: number;
   holdings: Holding[];
   transactions: Transaction[];
   // portfolioHistory: { timestamp: number; totalValue: number }[]; // buat chart

@@ -4,7 +4,7 @@ const STORAGE_KEY = "portofolio_state";
 const INITIAL_BALANCE = 100_000_000;
 
 const defaultPortofolio = (): PortfolioState => ({
-  cash: INITIAL_BALANCE,
+  balance: INITIAL_BALANCE,
   holdings: [],
   transactions: [],
 });
@@ -45,7 +45,7 @@ export const saveTransaction = (
     timestamp: Date.now(),
   };
 
-  if (type === "buy") portofolio.cash = portofolio.cash - total;
+  if (type === "buy") portofolio.balance = portofolio.balance - total;
   portofolio.holdings.push(holding);
   portofolio.transactions.push(transaction);
 

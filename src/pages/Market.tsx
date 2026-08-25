@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
 import { fetchTicker } from "../services/binance";
 import { mergeCoinData } from "../utils/mergeCoinData";
-import type { MarketCardProps } from "../components/MarketCard";
-
+// import type { CoinData } from "../components/MarketCard";
+import type { CoinData } from "../types";
 import MarketCard from "../components/MarketCard";
 import { getPortofolio } from "../hooks/usePortofolio";
 import type { PortfolioState } from "../types";
 import BuyModal from "../components/BuyModal";
 
 export default function Market() {
-  const [coins, setCoins] = useState<MarketCardProps[]>([]);
-  const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
+  const [coins, setCoins] = useState<CoinData[]>([]);
+  const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
+  const { balance } = getPortofolio();
   useEffect(() => {
     fetchTicker().then((data) => setCoins(mergeCoinData(data)));
   }, []);
-  const portofolio: PortfolioState = getPortofolio();
+
   return (
     <>
       <div className="border border-black ">
-        {coins.map((coin: MarketCardProps, index): any => {
+        {coins.map((coin: CoinData, index): any => {
           return (
             <div key={coin.ticker + index + Date.now()}>
               <MarketCard
@@ -28,7 +29,14 @@ export default function Market() {
                 price={coin.price}
                 changePercent={coin.changePercent}
               />
-              <button onClick={() => setSelectedCoin(coin)}>Beli</button>
+              <button
+                onClick={() => {
+                  setSelectedCoin(coin);
+                  console.log(coin);
+                }}
+              >
+                Beli
+              </button>
             </div>
           );
         })}
@@ -37,6 +45,8 @@ export default function Market() {
         <BuyModal
           coinName={selectedCoin.name}
           coinSymbol={selectedCoin.ticker}
+          coinPrice={selectedCoin.price}
+          balance={balance}
           isOpen={!!selectedCoin}
           onClose={() => setSelectedCoin(null)}
           onSubmit={(amount) => {
