@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 interface BuyModalProps {
   coinName: string;
   coinSymbol: string;
-  coinPrice: number; // harga per koin dalam Rp
+  coinPrice: number; // harga per koin dalam USDT
   balance: number; // saldo virtual saat ini
   isOpen: boolean;
   onClose: () => void;
@@ -19,7 +19,7 @@ export default function BuyModal({
   onClose,
   onSubmit,
 }: BuyModalProps) {
-  const [nominal, setNominal] = useState(""); // user input dalam Rp
+  const [nominal, setNominal] = useState(""); // user input dalam USDT
 
   if (!isOpen) return null;
 
@@ -41,14 +41,14 @@ export default function BuyModal({
           Beli {coinName} ({coinSymbol.toUpperCase()})
         </h2>
         <p className="text-sm text-gray-500 mb-4">
-          Harga: Rp {coinPrice.toLocaleString("id-ID")}
+          Harga: USDT {coinPrice.toLocaleString("id-ID")}
         </p>
 
         <input
           type="number"
           value={nominal}
           onChange={(e) => setNominal(e.target.value)}
-          placeholder="Nominal (Rp)"
+          placeholder="Nominal (USDT)"
           className="w-full border rounded px-3 py-2"
         />
 
@@ -56,7 +56,7 @@ export default function BuyModal({
           Kamu dapat: {coinAmount.toFixed(6)} {coinSymbol.toUpperCase()}
         </div>
         <div className="text-sm text-gray-600 mb-4">
-          Saldo tersedia: Rp {balance.toLocaleString("id-ID")}
+          Saldo tersedia: USDT {balance.toLocaleString("id-ID")}
         </div>
 
         {isInsufficientBalance && nominalNum > 0 && (

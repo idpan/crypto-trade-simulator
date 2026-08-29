@@ -1,7 +1,7 @@
 import type { Holding, PortfolioState, Transaction } from "../types";
 
 const STORAGE_KEY = "portofolio_state";
-const INITIAL_BALANCE = 100_000_000;
+export const INITIAL_BALANCE = 10_000;
 
 const defaultPortofolio = (): PortfolioState => ({
   balance: INITIAL_BALANCE,
