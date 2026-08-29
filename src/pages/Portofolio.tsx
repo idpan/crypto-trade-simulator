@@ -79,8 +79,12 @@ export default function Portofolio() {
                       const confirmationMessage = `apakah ingin lanjut menjual ${amount} ${coin.ticker} seharga ${(amount * coin.price).toFixed(2)} ?`;
                       if (!confirm(confirmationMessage)) return;
 
-                      console.log("sell coin success you get");
-                      console.log(amount);
+                      saveTransaction(
+                        selectedCoin.coinId,
+                        amount,
+                        coin.price,
+                        "sell",
+                      );
                       const successMessage = `Penjualan ${amount} ${coin.ticker} seharga ${(amount * coin.price).toFixed(2)} sukses !!! `;
                       alert(successMessage);
                       setSelectedCoin(null);

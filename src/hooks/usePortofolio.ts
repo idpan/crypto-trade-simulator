@@ -70,6 +70,26 @@ export const saveTransaction = (
     }
   }
 
+  if (type === "sell") {
+    portofolio.balance = portofolio.balance + total;
+
+    if (existingIndex != -1) {
+      portofolio.holdings = portofolio.holdings
+        .map((holding: Holding): Holding => {
+          if (holding.coinId === coinId) {
+            const newQty = holding.qty - qty;
+
+            return { ...holding, qty: newQty };
+          }
+
+          return holding;
+        })
+        .filter((holding: Holding) => holding.qty > 0);
+    } else {
+      portofolio.holdings.push(holding);
+    }
+  }
+
   portofolio.transactions.push(transaction);
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(portofolio));
