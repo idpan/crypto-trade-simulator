@@ -31,7 +31,6 @@ export default function Market() {
               <button
                 onClick={() => {
                   setSelectedCoin(coin);
-                  console.log(coin);
                 }}
               >
                 Beli

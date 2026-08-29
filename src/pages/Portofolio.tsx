@@ -1,9 +1,13 @@
 import { getPortofolio } from "../hooks/usePortofolio";
 import { coinData } from "../data/coins";
 import { Link } from "react-router";
+import { useState } from "react";
+import type { Holding } from "../types";
+import SellModal from "../components/SellModal";
 export default function Portofolio() {
-  const { holdings } = getPortofolio();
+  const [selectedCoin, setSelectedCoin] = useState<Holding | null>(null);
 
+  const { holdings } = getPortofolio();
   return (
     <>
       <h1>Portofolio</h1>
@@ -25,26 +29,49 @@ export default function Portofolio() {
           if (!coin) return null; // jaga-jaga kalau coinId gak ketemu
 
           return (
-            <div
-              key={holding.coinId}
-              className="border border-black w-96 grid grid-cols-4"
-            >
-              <div>
-                <img
-                  src={`/logos/${coin.logo}`}
-                  alt={coin.name}
-                  className="w-8 h-8"
+            <>
+              <div
+                key={holding.coinId}
+                className="border border-black w-96 grid grid-cols-4"
+              >
+                <div>
+                  <img
+                    src={`/logos/${coin.logo}`}
+                    alt={coin.name}
+                    className="w-8 h-8"
+                  />
+                </div>
+                <div>
+                  <p className="font-bold">{coin.name}</p>
+                  <p className="text-gray-400">{coin.ticker}</p>
+                </div>
+                <div>
+                  <p>{holding.qty}</p>
+                  <p className="text-xl">{holding.avgPrice}</p>
+                </div>
+                <button
+                  className="bg-red-500 text-black p-3 rounded-lg"
+                  onClick={() => {
+                    setSelectedCoin(holding);
+                  }}
+                >
+                  Jual
+                </button>
+              </div>
+
+              {selectedCoin && (
+                <SellModal
+                  coinLogo={coin.logo}
+                  coinName={coin.name}
+                  // coinPrice={coin.}
+                  coinTicker={coin.ticker}
+                  coinQty={selectedCoin.qty}
+                  onClose={() => {
+                    setSelectedCoin(null);
+                  }}
                 />
-              </div>
-              <div>
-                <p className="font-bold">{coin.name}</p>
-                <p className="text-gray-400">{coin.ticker}</p>
-              </div>
-              <div>
-                <p>{holding.qty}</p>
-                <p className="text-xl">{holding.avgPrice}</p>
-              </div>
-            </div>
+              )}
+            </>
           );
         })
       )}
