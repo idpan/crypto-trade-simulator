@@ -1,11 +1,17 @@
-import { getPortofolio } from "../hooks/usePortofolio";
-import { coinData } from "../data/coins";
+import { getPortofolio, saveTransaction } from "../hooks/usePortofolio";
 import { Link } from "react-router";
-import { useState } from "react";
-import type { Holding } from "../types";
+import { useEffect, useState } from "react";
+import type { CoinData, Holding } from "../types";
 import SellModal from "../components/SellModal";
+import { fetchTicker } from "../services/binance";
+import { mergeCoinData } from "../utils/mergeCoinData";
 export default function Portofolio() {
   const [selectedCoin, setSelectedCoin] = useState<Holding | null>(null);
+
+  const [coins, setCoins] = useState<CoinData[]>([]);
+  useEffect(() => {
+    fetchTicker().then((data) => setCoins(mergeCoinData(data)));
+  }, []);
 
   const { holdings } = getPortofolio();
   return (
@@ -24,9 +30,8 @@ export default function Portofolio() {
         </>
       ) : (
         holdings?.map((holding) => {
-          const coin = coinData.find((c) => c.id === holding.coinId);
-
-          if (!coin) return null; // jaga-jaga kalau coinId gak ketemu
+          const coin = coins.find((c) => c.id === holding.coinId);
+          if (!coin) return null;
 
           return (
             <>
@@ -63,11 +68,25 @@ export default function Portofolio() {
                 <SellModal
                   coinLogo={coin.logo}
                   coinName={coin.name}
-                  // coinPrice={coin.}
+                  coinPrice={coin.price}
                   coinTicker={coin.ticker}
                   coinQty={selectedCoin.qty}
                   onClose={() => {
                     setSelectedCoin(null);
+                  }}
+                  onSubmit={(amount) => {
+                    try {
+                      const confirmationMessage = `apakah ingin lanjut menjual ${amount} ${coin.ticker} seharga ${(amount * coin.price).toFixed(2)} ?`;
+                      if (!confirm(confirmationMessage)) return;
+
+                      console.log("sell coin success you get");
+                      console.log(amount);
+                      const successMessage = `Penjualan ${amount} ${coin.ticker} seharga ${(amount * coin.price).toFixed(2)} sukses !!! `;
+                      alert(successMessage);
+                      setSelectedCoin(null);
+                    } catch (error) {
+                      alert(`Penjualan gagal karna ${error}`);
+                    }
                   }}
                 />
               )}

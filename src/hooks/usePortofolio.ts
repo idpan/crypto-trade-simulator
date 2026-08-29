@@ -45,24 +45,29 @@ export const saveTransaction = (
     timestamp: Date.now(),
   };
 
-  if (type === "buy") portofolio.balance = portofolio.balance - total;
   const existingIndex = portofolio.holdings.findIndex((h: Holding) => {
     return h.coinId === coinId;
   });
-  if (existingIndex != -1) {
-    portofolio.holdings = portofolio.holdings.map(
-      (holding: Holding): Holding => {
-        if (holding.coinId === coinId) {
-          const newQty = holding.qty + qty;
-          const newAvgPrice = (holding.avgPrice * holding.qty + total) / newQty;
-          return { ...holding, qty: newQty, avgPrice: newAvgPrice };
-        }
 
-        return holding;
-      },
-    );
-  } else {
-    portofolio.holdings.push(holding);
+  if (type === "buy") {
+    portofolio.balance = portofolio.balance - total;
+
+    if (existingIndex != -1) {
+      portofolio.holdings = portofolio.holdings.map(
+        (holding: Holding): Holding => {
+          if (holding.coinId === coinId) {
+            const newQty = holding.qty + qty;
+            const newAvgPrice =
+              (holding.avgPrice * holding.qty + total) / newQty;
+            return { ...holding, qty: newQty, avgPrice: newAvgPrice };
+          }
+
+          return holding;
+        },
+      );
+    } else {
+      portofolio.holdings.push(holding);
+    }
   }
 
   portofolio.transactions.push(transaction);

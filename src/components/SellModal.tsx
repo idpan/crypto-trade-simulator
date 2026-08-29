@@ -1,20 +1,35 @@
+import { useState } from "react";
+
 interface SellModalProps {
   coinLogo: string;
   coinName: string;
   coinTicker: string;
-  // coinPrice: String;
+  coinPrice: number;
   coinQty: number;
-
   onClose: () => void;
+  onSubmit: (amount: number) => void;
 }
 export default function SellModal({
   coinLogo,
   coinName,
   coinTicker,
-  // coinPrice,
+  coinPrice,
   coinQty,
   onClose,
+  onSubmit,
 }: SellModalProps) {
+  const [sellQty, setSellQty] = useState<string>("");
+
+  const sellQtyNum = parseFloat(sellQty) || 0;
+  const willReceiveAmount: number = sellQtyNum * coinPrice;
+  const isInsufficientBalance = sellQtyNum > coinQty;
+  const isInvalid = sellQtyNum <= 0 || isInsufficientBalance;
+
+  const handleSubmit = () => {
+    if (isInvalid) return;
+    onSubmit(sellQtyNum);
+    setSellQty("");
+  };
   return (
     <div className="w-80 h-30">
       <div className="flex justify-between">
@@ -22,7 +37,7 @@ export default function SellModal({
           <div>{coinLogo}</div>
           <div>
             <p>Jual {coinName} </p>
-            <p> -coinPrice- </p>
+            <p> {coinPrice} </p>
           </div>
         </div>
         <div>
@@ -33,19 +48,37 @@ export default function SellModal({
       </div>
       <div>
         <p>Jumlah {coinTicker} yang dijual</p>
-        <input type="text" />
-        <button>MAX</button>
+        <input
+          value={sellQty}
+          onChange={(e) => {
+            setSellQty(e.target.value);
+          }}
+          type="number"
+        />
+        <button
+          onClick={() => {
+            setSellQty(`${coinQty}`);
+          }}
+        >
+          MAX
+        </button>
         <p>Dipegang: {coinQty} </p>
       </div>
       <div>
         <div>
           <p>Akan diterima</p>
-          <p>-coinInput * coinPrice-</p>
+          <p>{willReceiveAmount}</p>
         </div>
       </div>
       <div>
-        <button>Batal</button>
-        <button>Konfirmasi Jual</button>
+        <button onClick={onClose}>Batal</button>
+        <button
+          onClick={handleSubmit}
+          disabled={isInvalid}
+          className="bg-black p-3 text-white  disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          Konfirmasi Jual
+        </button>
       </div>
     </div>
   );
