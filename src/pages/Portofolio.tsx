@@ -1,8 +1,4 @@
-import {
-  INITIAL_BALANCE,
-  getPortofolio,
-  saveTransaction,
-} from "../hooks/usePortofolio";
+import { getPortofolio, saveTransaction } from "../hooks/usePortofolio";
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
 import type { CoinData, Holding } from "../types";
@@ -18,15 +14,22 @@ export default function Portofolio() {
   }, []);
 
   const { holdings, balance } = getPortofolio();
+  const totalHoldingsValue = holdings.reduce((sum, h) => {
+    const coin = coins.find((c) => c.id === h.coinId);
+    return sum + (coin ? h.qty * coin.price : 0);
+  }, 0);
+  const totalPortfolioValue = balance + totalHoldingsValue;
+
   return (
     <>
       <h1>Portofolio</h1>
       <div>
         <h2>Alokasi Portofolio</h2>
+
         {balance > 0 ? (
           <div className="flex gap-10">
             <p>USDT</p>
-            <p>{((balance / INITIAL_BALANCE) * 100).toFixed(1)}%</p>
+            <p>{((balance / totalPortfolioValue) * 100).toFixed(1)}%</p>
           </div>
         ) : (
           ""
@@ -43,7 +46,7 @@ export default function Portofolio() {
                   <p>{coin.ticker}</p>
                   <p>
                     {(
-                      ((holding.qty * coin.price) / INITIAL_BALANCE) *
+                      ((holding.qty * coin.price) / totalPortfolioValue) *
                       100
                     ).toFixed(1)}
                     %
