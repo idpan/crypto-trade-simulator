@@ -5,7 +5,7 @@ interface HoldingCardProps {
   coinTicker: string;
   qty: number;
   avgPrice: number;
-  onSell: () => void;
+  onSell?: () => void;
 }
 export default function HoldingCard({
   coinId,
@@ -29,9 +29,14 @@ export default function HoldingCard({
         <p>{qty}</p>
         <p className="text-xl">{avgPrice}</p>
       </div>
-      <button className="bg-red-500 text-black p-3 rounded-lg" onClick={onSell}>
-        Jual
-      </button>
+      {onSell && (
+        <button
+          className="bg-red-500 text-black p-3 rounded-lg"
+          onClick={onSell}
+        >
+          Jual
+        </button>
+      )}
     </div>
   );
 }
