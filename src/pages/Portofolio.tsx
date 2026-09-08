@@ -5,6 +5,7 @@ import type { CoinData, Holding } from "../types";
 import SellModal from "../components/SellModal";
 import { fetchTicker } from "../services/binance";
 import { mergeCoinData } from "../utils/mergeCoinData";
+import HoldingCard from "../components/HoldingCard";
 export default function Portofolio() {
   const [selectedCoin, setSelectedCoin] = useState<Holding | null>(null);
 
@@ -75,34 +76,17 @@ export default function Portofolio() {
 
           return (
             <>
-              <div
-                key={holding.coinId}
-                className="border border-black w-96 grid grid-cols-4"
-              >
-                <div>
-                  <img
-                    src={`/logos/${coin.logo}`}
-                    alt={coin.name}
-                    className="w-8 h-8"
-                  />
-                </div>
-                <div>
-                  <p className="font-bold">{coin.name}</p>
-                  <p className="text-gray-400">{coin.ticker}</p>
-                </div>
-                <div>
-                  <p>{holding.qty}</p>
-                  <p className="text-xl">{holding.avgPrice}</p>
-                </div>
-                <button
-                  className="bg-red-500 text-black p-3 rounded-lg"
-                  onClick={() => {
-                    setSelectedCoin(holding);
-                  }}
-                >
-                  Jual
-                </button>
-              </div>
+              <HoldingCard
+                coinId={holding.coinId}
+                coinLogo={coin.logo}
+                coinName={coin.name}
+                coinTicker={coin.ticker}
+                qty={holding.qty}
+                avgPrice={holding.avgPrice}
+                onSell={() => {
+                  setSelectedCoin(holding);
+                }}
+              ></HoldingCard>
 
               {selectedCoin && (
                 <SellModal
