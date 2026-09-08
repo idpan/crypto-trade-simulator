@@ -88,7 +88,7 @@ export default function Portofolio() {
                 }}
               ></HoldingCard>
 
-              {selectedCoin && (
+              {selectedCoin && selectedCoin.coinId === holding.coinId && (
                 <SellModal
                   coinLogo={coin.logo}
                   coinName={coin.name}
