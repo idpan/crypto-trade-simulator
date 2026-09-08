@@ -94,3 +94,7 @@ export const saveTransaction = (
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(portofolio));
 };
+
+export const clearPortofolio = () => {
+  localStorage.removeItem(STORAGE_KEY);
+};

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getPortofolio, INITIAL_BALANCE } from "../hooks/usePortofolio";
+import {
+  clearPortofolio,
+  getPortofolio,
+  INITIAL_BALANCE,
+} from "../hooks/usePortofolio";
 import { fetchTicker } from "../services/binance";
 import { mergeCoinData } from "../utils/mergeCoinData";
 import type { CoinData } from "../types";
@@ -21,8 +25,26 @@ export default function Dashboard() {
   const pnl = totalPortfolioValue - INITIAL_BALANCE;
   const pnl_percent = (pnl / INITIAL_BALANCE) * 100;
   const holdingPreview = holdings.slice(0, 3);
+
+  function handleResetSimulation() {
+    const confirmationMessage =
+      "Yakin ingin reset simulasi? Semua saldo, holdings, dan riwayat transaksi akan dihapus dan tidak bisa dikembalikan.";
+
+    if (!confirm(confirmationMessage)) return;
+
+    clearPortofolio();
+
+    alert("Simulasi berhasil direset. Saldo kembali ke 10.000 USDT.");
+  }
+
   return (
     <div>
+      <button
+        onClick={handleResetSimulation}
+        className="bg-red-400 border border-black p-3 rounded-md  "
+      >
+        Reset Simulasi
+      </button>
       <div
         id="portofolio-summary-card"
         className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4"
