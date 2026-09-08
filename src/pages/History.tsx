@@ -42,44 +42,52 @@ export default function History() {
           );
         })}
       </select>
-      {filteredTransactions.map((transaction) => {
-        const coin = coinData.find((c) => c.id === transaction.coinId);
-        if (!coin) return null;
-        const time = new Date(transaction.timestamp).toLocaleString("id-ID", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-        return (
-          <div key={transaction.id} className="p-5 border-b-2 border-t-2">
-            <div className="flex justify-between">
-              <div>
-                <p>{coin.ticker}</p>
-                {transaction.type == "buy" ? (
-                  <p className="font-bold text-green-500">{transaction.type}</p>
-                ) : (
-                  <p className="font-bold text-red-500">{transaction.type}</p>
-                )}
+      {filteredTransactions[0] ? (
+        filteredTransactions.map((transaction) => {
+          const coin = coinData.find((c) => c.id === transaction.coinId);
+          if (!coin) return null;
+          const time = new Date(transaction.timestamp).toLocaleString("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          return (
+            <div key={transaction.id} className="p-5 border-b-2 border-t-2">
+              <div className="flex justify-between">
+                <div>
+                  <p>{coin.ticker}</p>
+                  {transaction.type == "buy" ? (
+                    <p className="font-bold text-green-500">
+                      {transaction.type}
+                    </p>
+                  ) : (
+                    <p className="font-bold text-red-500">{transaction.type}</p>
+                  )}
+                </div>
+                <p>{time}</p>
               </div>
-              <p>{time}</p>
+              <div className="flex justify-between">
+                <p>Price : </p>
+                <p>{transaction.price}</p>
+              </div>
+              <div className="flex justify-between">
+                <p>Jumlah coin :</p>
+                <p>{transaction.qty}</p>
+              </div>
+              <div className="flex justify-between">
+                <p>Total :</p>
+                <p>{transaction.total}</p>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <p>Price : </p>
-              <p>{transaction.price}</p>
-            </div>
-            <div className="flex justify-between">
-              <p>Jumlah coin :</p>
-              <p>{transaction.qty}</p>
-            </div>
-            <div className="flex justify-between">
-              <p>Total :</p>
-              <p>{transaction.total}</p>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })
+      ) : (
+        <div>
+          <p>Belum ada transaksi</p>
+        </div>
+      )}
     </>
   );
 }
