@@ -9,6 +9,7 @@ import { mergeCoinData } from "../utils/mergeCoinData";
 import type { CoinData } from "../types";
 import { Link } from "react-router";
 import HoldingCard from "../components/HoldingCard";
+import MarketPulseCard from "../components/MarketPulseCard";
 
 export default function Dashboard() {
   const [coins, setCoins] = useState<CoinData[]>([]);
@@ -117,6 +118,7 @@ export default function Dashboard() {
           </>
         )}
       </div>
+      <MarketPulseCard></MarketPulseCard>
     </div>
   );
 }
